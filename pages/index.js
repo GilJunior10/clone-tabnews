@@ -1,4 +1,19 @@
+import { useState, useRef } from "react";
+import marioSong from "../src/mario.mp3";
+
 function Home() {
+  const [tocando, setTocando] = useState(false);
+  const audioRef = useRef(null);
+
+  function toggleMusica() {
+    if (tocando) {
+      audioRef.current.pause();
+    } else {
+      audioRef.current.play();
+    }
+    setTocando(!tocando);
+  }
+
   return (
     <div
       style={{
@@ -23,12 +38,23 @@ function Home() {
         style={{ width: "300px", borderRadius: "12px", marginTop: "20px" }}
       />
 
-      <audio autoPlay loop>
-        <source
-          src="https://www.mariomayhem.com/downloads/super_mario_world_music/super_mario_world_overworld_theme.mp3"
-          type="audio/mpeg"
-        />
-      </audio>
+      <audio ref={audioRef} loop src={marioSong} />
+
+      <button
+        onClick={toggleMusica}
+        style={{
+          marginTop: "24px",
+          padding: "12px 28px",
+          fontSize: "18px",
+          borderRadius: "8px",
+          border: "none",
+          backgroundColor: "#e74c3c",
+          color: "white",
+          cursor: "pointer",
+        }}
+      >
+        {tocando ? "⏸ Pausar música" : "▶️ Tocar música do Mario"}
+      </button>
     </div>
   );
 }
